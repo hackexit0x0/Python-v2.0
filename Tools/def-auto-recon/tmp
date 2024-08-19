@@ -9,6 +9,7 @@ RESET = "\033[0m"
 GREEN = "\033[92m"
 RED = "\033[91m"
 
+# Define function to print colored text
 def print_colored(message, color=RESET):
     print(f"{color}{message}{RESET}")
 
