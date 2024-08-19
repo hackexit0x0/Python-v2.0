@@ -1,10 +1,28 @@
 #!/python3
 
-class def_auto_recon:
-     
-     def __init__(self):
-          print("[+] Def-Auto-Recon..")
+import os, time
 
-     def crt_sh(self, url):
-         print("[+] Crt.sh Subdomains founding Strt..." + url)
-     
+class Tools:
+     def __init__(self):
+          print("[+] Def-Auto-Recon Setup && Tools instalation...")
+          # System update
+          print("[+] System update...")
+          os.system("apt update")
+
+          # System upgrade
+          print("[+] System upgrade...")
+          os.system("apt upgrade -y")
+
+          # instal python3
+          print("[+] Python3 install...")
+          os.system("apt install -y python3")
+
+          # instal python3-pip
+          print("[+] Python3-pip install...")
+          os.system("apt install -y python3-pip")
+
+          # instal python Def-Auto-Recon reuirements.txt
+          print("[+] Python Def-Auto-Recon reuirements.txt install...")
+          os.system("pip3 install -r requirements.txt")
+          time.sleep(5)
+          print("[+] Def-Auto-Recon Setup && Tools instalation complete...")
