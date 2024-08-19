@@ -39,4 +39,10 @@ class Tools:
      def ToolsSetup(self):
           # install amass
           print("[+] Amass install...")
-          os.system("g")
+          #os.system("wget ")
+          os.system("cp modules/amass /usr/bin/amass")
+
+
+
+# tools setup function
+Tools.ToolsSetup()
