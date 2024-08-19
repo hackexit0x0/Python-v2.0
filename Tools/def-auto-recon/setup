@@ -1,0 +1,10 @@
+#!/python3
+
+class def_auto_recon:
+     
+     def __init__(self):
+          print("[+] Def-Auto-Recon..")
+
+     def crt_sh(self, url):
+         print("[+] Crt.sh Subdomains founding Strt..." + url)
+     
