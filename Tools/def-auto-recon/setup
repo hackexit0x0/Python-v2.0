@@ -25,4 +25,18 @@ class Tools:
           print("[+] Python Def-Auto-Recon reuirements.txt install...")
           os.system("pip3 install -r requirements.txt")
           time.sleep(5)
+
+          # Wget install
+          print("[+] wget install...")
+          os.system("apt install -y wget")
+
+          # git install
+          print("[+] git install...")
+          os.system("apt install -y git")
           print("[+] Def-Auto-Recon Setup && Tools instalation complete...")
+
+     # tools setup function
+     def ToolsSetup(self):
+          # install amass
+          print("[+] Amass install...")
+          os.system("g")
