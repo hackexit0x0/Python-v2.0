@@ -20,9 +20,10 @@ class DefAutoRecon:
 
     def crt_sh(self, domain):
         # Find subdomains using crt.sh
+        print("[+] Crt.sh Subdomains founding Strt..." + domain)
         print(f"[+] Starting subdomain search for: {domain}")
         os.system(f"curl -s https://crt.sh/?q={domain} | grep -oE '[a-zA-Z0-9.-]+\\.{domain}' >> files/crt.sh.{domain}.active.txt")
-        print("[+] Subdomain search complete.")
+        print("[+] crt.sh Subdomain search complete.")
         
         # Filter valid subdomains
         self.filter_domains(domain)
@@ -42,6 +43,14 @@ class DefAutoRecon:
             output_file.writelines(filtered_domains)
         
         print(f"[+] Filtered subdomains saved to 'files/crt.sh.{domain}.txt'.")
+
+    # TheHarvester tool
+    def TheHarvester(self, domain):
+        print("[+] TheHarvester initialized...")
+        print(f"[+] Starting subdomain search for: {domain}")
+        os.system(f"theHarvester -d {self.domain} -b all | tee files/TheHarvester.{self.domain}.txt ")
+        print("[+] TheHarvester Subdomain search complete.")
+
 
 if __name__ == "__main__":
     inp = input("Enter your domain: ")
