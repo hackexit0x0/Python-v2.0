@@ -118,7 +118,7 @@ def main():
 
 def subfinder():
     print_colored(f"[+] Subfinder subdomain search starting for: {domain}", GREEN)
-    subfinder_file = f"files/subfinder.{domain}.active.txt"
+    subfinder_file = f"files/subfinder.{domain}.txt"
     try:
         subprocess.run(f"subfinder -d {domain} -silent | tee {subfinder_file}", shell=True, check=True)
         print_colored("[+] Subfinder Subdomain search complete.", GREEN)
@@ -128,12 +128,23 @@ def subfinder():
 # assetfinder
 def assetfinder():
     print_colored(f"[+] Assetfinder subdomain search starting for: {domain}", GREEN)
-    assetfinder_file = f"files/assetfinder.{domain}.active.txt"
+    assetfinder_file = f"files/assetfinder.{domain}.txt"
     try:
         subprocess.run(f"assetfinder -subs-only {domain} | tee {assetfinder_file}", shell=True, check=True)
         print_colored("[+] Assetfinder Subdomain search complete.", GREEN)
     except subprocess.CalledProcessError as e:
         print_colored(f"[-] Error running assetfinder: {e}", RED)
+
+# Subdomain Brute Force
+print_colored(f"[+] Subdomain Brute Force starting for: {domain}", GREEN)
+def subdomain_brute_force():
+    subdomain_file = f"files/subdomain_brute_force.{domain}.txt"
+    try:
+        subprocess.run(f"subdomain_brute_force -d {domain} | tee {subdomain_file}", shell=True, check=True)
+        print_colored("[+] Subdomain Brute Force complete.", GREEN)
+    except subprocess.CalledProcessError as e:
+        print_colored(f"[-] Error running subdomain_brute_force: {e}", RED)
+
 
 if __name__ == "__main__":
     main()

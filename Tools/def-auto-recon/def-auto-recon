@@ -9,6 +9,7 @@ RESET = "\033[0m"
 GREEN = "\033[92m"
 RED = "\033[91m"
 
+# Define function to print colored text
 def print_colored(message, color=RESET):
     print(f"{color}{message}{RESET}")
 
@@ -24,6 +25,9 @@ if not os.path.exists("files"):
 if not os.path.exists("Recycle-Bin"):
     os.mkdir("Recycle-Bin")
     print_colored(f"[+] '{RED}Recycle-Bin{RESET}' directory created.", GREEN)
+if not os.path.exists("Additional_info"):
+    os.mkdir("Additional_info")
+    print_colored(f"[+] '{RED}Additional_info{RESET}' directory created.", GREEN)
 
 # Find subdomains using crt.sh
 print_colored(f"[+] Crt.sh Subdomains search starting for: {domain}", GREEN)
@@ -47,10 +51,12 @@ print_colored(f"Filtered subdomains saved to 'files/crt.sh.{domain}.subdomains.t
 
 # Move the crt.sh file to Recycle-Bin
 os.rename(crt_sh_file, f'Recycle-Bin/{os.path.basename(crt_sh_file)}')
-print_colored(f"[+] Temporary file moved to 'Recycle-Bin/'", GREEN)
+print_colored(f"[+] Temporary file moved to 'Recycle-Bin/'\n", GREEN)
 
 # Find subdomains using TheHarvester
 print_colored(f"[+] TheHarvester subdomain search starting for: {domain}", GREEN)
+print_colored(f"[+] TheHarvester is Running for: {domain} So waiting....." , GREEN)
+
 theharvester_file = f"files/TheHarvester.{domain}.active.txt"
 try:
     subprocess.run(f"theHarvester -d {domain} -b all | tee {theharvester_file}", shell=True, check=True)
@@ -100,13 +106,39 @@ def main():
         if sd.endswith(f'.{domain}') or sd.startswith(f'*.{domain}')
     ]
     
-    write_to_file(f'files/{domain}.subdomains.txt', filtered_subdomains)
-    write_to_file(f'files/{domain}.ips.txt', ips)
-    write_to_file(f'files/{domain}.emails.txt', emails)
+    write_to_file(f'Additional_info/{domain}.subdomains.txt', filtered_subdomains)
+    write_to_file(f'Additional_info/{domain}.ips.txt', ips)
+    write_to_file(f'Additional_info/{domain}.emails.txt', emails)
 
     # Move the TheHarvester file to Recycle-Bin
     os.rename(theharvester_file, f'Recycle-Bin/{os.path.basename(theharvester_file)}')
-    print_colored(f"[+] Temporary file moved to 'Recycle-Bin'", GREEN)
+    print_colored(f"[+] Temporary file moved to 'Recycle-Bin'\n", GREEN)
+
+# Subfinder
+
+def subfinder():
+    print_colored(f"[+] Subfinder subdomain search starting for: {domain}", GREEN)
+    subfinder_file = f"files/subfinder.{domain}.txt"
+    try:
+        subprocess.run(f"subfinder -d {domain} -silent | tee {subfinder_file}", shell=True, check=True)
+        print_colored("[+] Subfinder Subdomain search complete.", GREEN)
+    except subprocess.CalledProcessError as e:
+        print_colored(f"[-] Error running subfinder: {e}", RED)
+
+# assetfinder
+def assetfinder():
+    print_colored(f"[+] Assetfinder subdomain search starting for: {domain}", GREEN)
+    assetfinder_file = f"files/assetfinder.{domain}.txt"
+    try:
+        subprocess.run(f"assetfinder -subs-only {domain} | tee {assetfinder_file}", shell=True, check=True)
+        print_colored("[+] Assetfinder Subdomain search complete.", GREEN)
+    except subprocess.CalledProcessError as e:
+        print_colored(f"[-] Error running assetfinder: {e}", RED)
+
+
+
 
 if __name__ == "__main__":
     main()
+    subfinder()
+    assetfinder()

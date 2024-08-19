@@ -59,6 +59,10 @@ class Tools:
         print("[+] Installing Assetfinder...")
         os.system("apt install -y assetfinder")
 
+        # dnsrecon
+        print("[+] Installing dnsrecon...")
+        os.system("apt install -y dnsrecon")
+
 
 # Instantiate the Tools class and run the tools setup
 if __name__ == "__main__":
