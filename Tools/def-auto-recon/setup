@@ -51,6 +51,15 @@ class Tools:
         os.system("cp modules/amass /usr/bin/amass")
         print("[+] Amass installation complete.")
 
+        # Install subfinder
+        print("[+] Installing subfinder...")
+        os.system("apt install -y subfinder")
+
+         # Install subfinder
+        print("[+] Installing Assetfinder...")
+        os.system("apt install -y assetfinder")
+
+
 # Instantiate the Tools class and run the tools setup
 if __name__ == "__main__":
     tools = Tools()
