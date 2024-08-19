@@ -1,48 +1,57 @@
-#!/python3
+#!/usr/bin/python3
 
-import os, time
+import os
+import time
 
 class Tools:
-     def __init__(self):
-          print("[+] Def-Auto-Recon Setup && Tools instalation...")
-          # System update
-          print("[+] System update...")
-          os.system("apt update")
+    def __init__(self):
+        print("[+] Def-Auto-Recon Setup && Tools Installation...")
+        
+        # System update
+        print("[+] System update...")
+        os.system("apt update")
 
-          # System upgrade
-          print("[+] System upgrade...")
-          os.system("apt upgrade -y")
+        # System upgrade
+        print("[+] System upgrade...")
+        print("[+] System upgrade...Skip you Intrested so run 'apt upgrade -y'") 
+       # os.system("apt upgrade -y")
 
-          # instal python3
-          print("[+] Python3 install...")
-          os.system("apt install -y python3")
+        # Install python3
+        print("[+] Python3 install...")
+        os.system("apt install -y python3")
 
-          # instal python3-pip
-          print("[+] Python3-pip install...")
-          os.system("apt install -y python3-pip")
+        # Install python3-pip
+        print("[+] Python3-pip install...")
+        os.system("apt install -y python3-pip")
 
-          # instal python Def-Auto-Recon reuirements.txt
-          print("[+] Python Def-Auto-Recon reuirements.txt install...")
-          os.system("pip3 install -r requirements.txt")
-          time.sleep(5)
+        # Install Python Def-Auto-Recon requirements
+        print("[+] Installing Python Def-Auto-Recon requirements...")
+        os.system("pip3 install -r requirements.txt")
+        time.sleep(5)
 
-          # Wget install
-          print("[+] wget install...")
-          os.system("apt install -y wget")
+        # Install wget
+        print("[+] Installing wget...")
+        os.system("apt install -y wget")
 
-          # git install
-          print("[+] git install...")
-          os.system("apt install -y git")
-          print("[+] Def-Auto-Recon Setup && Tools instalation complete...")
+        # Install git
+        print("[+] Installing git...")
+        os.system("apt install -y git")
+        print("[+] Def-Auto-Recon Setup && Tools Installation complete...")
 
-     # tools setup function
-     def ToolsSetup(self):
-          # install amass
-          print("[+] Amass install...")
-          #os.system("wget ")
-          os.system("cp modules/amass /usr/bin/amass")
+    def tools_setup(self):
+        # Install amass
+        print("[+] Installing amass...")
+        # If you have a URL or source for amass, you should use wget or curl to download it
+        # For example:
+        # os.system("wget https://example.com/amass.tar.gz")
+        # os.system("tar -xzf amass.tar.gz")
+        # os.system("cp amass /usr/bin/amass")
 
+        # Assuming `amass` binary is placed in `modules/` directory and needs to be copied
+        os.system("cp modules/amass /usr/bin/amass")
+        print("[+] Amass installation complete.")
 
-
-# tools setup function
-Tools.ToolsSetup()
+# Instantiate the Tools class and run the tools setup
+if __name__ == "__main__":
+    tools = Tools()
+    tools.tools_setup()
