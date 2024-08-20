@@ -1,0 +1,106 @@
+#!/usr/bin/env python3
+
+from argparse import ArgumentParser, FileType
+from threading import Thread, Lock
+from requests import get, exceptions
+from time import time
+
+subdomains = []
+lock = Lock()
+word_lock = Lock()  # Lock for the generator
+stop_threads = False  # Flag to signal threads to stop
+
+def prepare_args():
+    """Prepare Arguments
+    
+    Returns:
+        args (argparse.Namespace): Parsed command-line arguments
+    """
+    parser = ArgumentParser(description="Python Based Fast Subdomain Finder", 
+                            usage="%(prog)s example.com", 
+                            epilog="Example - %(prog)s -w wordlist.txt -t 500 -V example.com")
+    parser.add_argument("domain", metavar="Domain", help="Domain Name")
+    parser.add_argument("-w", "--wordlist", dest="wordlist", metavar="FILE", type=FileType("r"), 
+                        help="Wordlist of subdomains")
+    parser.add_argument("-t", "--threads", dest="threads", metavar="NUM", type=int, 
+                        help="Number of threads to use (1 to 100)", default=100)
+    parser.add_argument("-o", "--output", dest="output", metavar="FILE", type=FileType("w"), 
+                        help="Output file for discovered subdomains")
+    parser.add_argument("-V", "--verbose", action="store_true", help="Verbose output")
+    parser.add_argument("-v", "--version", action="version", 
+                        help="Print version", version="%(prog)s : beta (0.1)")
+    args = parser.parse_args()
+
+    # Remove "https://" or "http://" from the domain if present
+    args.domain = args.domain.lstrip("https://").lstrip("http://").rstrip("/")
+
+    if not args.wordlist:
+        parser.error("The -w/--wordlist argument is required.")
+
+    return args
+
+def prepare_words():
+    """Generator function for words from the wordlist"""
+    words = arguments.wordlist.read().split()
+    for word in words:
+        yield word
+        yield f"comet.{word}"  # Add comet before the word
+
+def check_subdomain():
+    """Check subdomain for HTTP status 200"""
+    while True:
+        if stop_threads:  # Check if we need to stop the thread
+            break
+        try:
+            with word_lock:  # Ensure only one thread accesses the generator at a time
+                word = next(words)
+            url = f"https://{word}.{arguments.domain}"
+            response = get(url, timeout=5)
+            if response.status_code == 200:
+                subdomain_without_http = f"{word}.{arguments.domain}"  # Subdomain without http/https
+                with lock:
+                    subdomains.append(subdomain_without_http)
+                    if arguments.verbose:
+                        print(subdomain_without_http)
+                    # Write to file safely with a lock
+                    if arguments.output:
+                        arguments.output.write(subdomain_without_http + "\n")
+                        arguments.output.flush()  # Ensure data is written to the file immediately
+        except (exceptions.ConnectionError, exceptions.ReadTimeout):
+            continue
+        except StopIteration:
+            break
+
+def prepare_threads():
+    """Create, start, and join threads"""
+    thread_list = []
+    for _ in range(arguments.threads):
+        thread = Thread(target=check_subdomain)
+        thread_list.append(thread)
+
+    for thread in thread_list:
+        thread.start()
+
+    # Wait for all threads to finish
+    for thread in thread_list:
+        thread.join()
+
+if __name__ == "__main__":
+    arguments = prepare_args()
+    words = prepare_words()
+    start_time = time()
+    
+    try:
+        prepare_threads()
+    except KeyboardInterrupt:
+        print("\nInterrupted! Exiting gracefully...")
+        stop_threads = True  # Signal threads to stop
+    
+    end_time = time()
+    
+    # Close the output file if it was opened
+    if arguments.output:
+        arguments.output.close()
+
+    print("Subdomains Found:\n" + "\n".join(subdomains))
+    print(f"Time Taken: {round(end_time - start_time, 2)} seconds")

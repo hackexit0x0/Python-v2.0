@@ -135,15 +135,7 @@ def assetfinder():
     except subprocess.CalledProcessError as e:
         print_colored(f"[-] Error running assetfinder: {e}", RED)
 
-# Subdomain Brute Force
-print_colored(f"[+] Subdomain Brute Force starting for: {domain}", GREEN)
-def subdomain_brute_force():
-    subdomain_file = f"files/subdomain_brute_force.{domain}.txt"
-    try:
-        subprocess.run(f"subdomain_brute_force -d {domain} | tee {subdomain_file}", shell=True, check=True)
-        print_colored("[+] Subdomain Brute Force complete.", GREEN)
-    except subprocess.CalledProcessError as e:
-        print_colored(f"[-] Error running subdomain_brute_force: {e}", RED)
+
 
 
 if __name__ == "__main__":
