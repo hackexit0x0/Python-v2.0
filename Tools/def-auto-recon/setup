@@ -3,44 +3,55 @@
 import os
 import time
 
+# Define color codes
+class Colors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
 class Tools:
     def __init__(self):
-        print("[+] Def-Auto-Recon Setup && Tools Installation...")
+        print(f"{Colors.HEADER}[+] Def-Auto-Recon Setup && Tools Installation...{Colors.ENDC}")
         
         # System update
-        print("[+] System update...")
+        print(f"{Colors.OKBLUE}[+] System update...{Colors.ENDC}")
         os.system("apt update")
 
         # System upgrade
-        print("[+] System upgrade...")
-        print("[+] System upgrade...Skip you Intrested so run 'apt upgrade -y'") 
-       # os.system("apt upgrade -y")
+        print(f"{Colors.OKBLUE}[+] System upgrade...{Colors.ENDC}")
+        print(f"{Colors.WARNING}[+] System upgrade...Skip you Intrested so run 'apt upgrade -y'{Colors.ENDC}") 
+        # os.system("apt upgrade -y")
 
         # Install python3
-        print("[+] Python3 install...")
+        print(f"{Colors.OKBLUE}[+] Python3 install...{Colors.ENDC}")
         os.system("apt install -y python3")
 
         # Install python3-pip
-        print("[+] Python3-pip install...")
+        print(f"{Colors.OKBLUE}[+] Python3-pip install...{Colors.ENDC}")
         os.system("apt install -y python3-pip")
 
         # Install Python Def-Auto-Recon requirements
-        print("[+] Installing Python Def-Auto-Recon requirements...")
+        print(f"{Colors.OKBLUE}[+] Installing Python Def-Auto-Recon requirements...{Colors.ENDC}")
         os.system("pip3 install -r requirements.txt")
         time.sleep(5)
 
         # Install wget
-        print("[+] Installing wget...")
+        print(f"{Colors.OKBLUE}[+] Installing wget...{Colors.ENDC}")
         os.system("apt install -y wget")
 
         # Install git
-        print("[+] Installing git...")
+        print(f"{Colors.OKBLUE}[+] Installing git...{Colors.ENDC}")
         os.system("apt install -y git")
-        print("[+] Def-Auto-Recon Setup && Tools Installation complete...")
+        print(f"{Colors.OKGREEN}[+] Def-Auto-Recon Setup && Tools Installation complete...{Colors.ENDC}")
 
     def tools_setup(self):
         # Install amass
-        print("[+] Installing amass...")
+        print(f"{Colors.OKBLUE}[+] Installing amass...{Colors.ENDC}")
         # If you have a URL or source for amass, you should use wget or curl to download it
         # For example:
         # os.system("wget https://example.com/amass.tar.gz")
@@ -49,18 +60,18 @@ class Tools:
 
         # Assuming `amass` binary is placed in `modules/` directory and needs to be copied
         os.system("cp modules/amass /usr/bin/amass")
-        print("[+] Amass installation complete.")
+        print(f"{Colors.OKGREEN}[+] Amass installation complete.{Colors.ENDC}")
 
         # Install subfinder
-        print("[+] Installing subfinder...")
+        print(f"{Colors.OKBLUE}[+] Installing subfinder...{Colors.ENDC}")
         os.system("apt install -y subfinder")
 
-         # Install subfinder
-        print("[+] Installing Assetfinder...")
+        # Install assetfinder
+        print(f"{Colors.OKBLUE}[+] Installing Assetfinder...{Colors.ENDC}")
         os.system("apt install -y assetfinder")
 
-        # dnsrecon
-        print("[+] Installing dnsrecon...")
+        # Install dnsrecon
+        print(f"{Colors.OKBLUE}[+] Installing dnsrecon...{Colors.ENDC}")
         os.system("apt install -y dnsrecon")
 
 
